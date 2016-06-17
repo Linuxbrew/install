@@ -308,8 +308,8 @@ See http://linuxbrew.sh/#dependencies for more information.
 
 Add to your #{Tty.white}#{shell_profile}#{Tty.reset} by running
   echo 'export PATH="#{HOMEBREW_PREFIX}/bin:$PATH"' >>#{shell_profile}
-  echo 'export MANPATH="#{HOMEBREW_PREFIX}/share/man:$MANPATH"' >>#{shell_profile}
-  echo 'export INFOPATH="#{HOMEBREW_PREFIX}/share/info:$INFOPATH"' >>#{shell_profile}
+  echo 'export MANPATH="#{HOMEBREW_PREFIX}/share/man:$MANPATH:"' >>#{shell_profile}
+  echo 'export INFOPATH="#{HOMEBREW_PREFIX}/share/info:$INFOPATH:"' >>#{shell_profile}
 
 EOS
 elsif macos_version < "10.9" && macos_version > "10.6"
