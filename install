@@ -311,6 +311,7 @@ Add to your #{Tty.white}#{shell_profile}#{Tty.reset} by running
   echo 'export MANPATH="#{HOMEBREW_PREFIX}/share/man:$MANPATH"' >>#{shell_profile}
   echo 'export INFOPATH="#{HOMEBREW_PREFIX}/share/info:$INFOPATH"' >>#{shell_profile}
 
+We recommend you install #{Tty.white}GCC#{Tty.reset} by running `brew install gcc`.
 EOS
 elsif macos_version < "10.9" && macos_version > "10.6"
   `/usr/bin/cc --version 2> /dev/null` =~ %r[clang-(\d{2,})]
