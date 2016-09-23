@@ -59,7 +59,7 @@ def sudo *args
   system "/usr/bin/sudo", *args
 end
 
-def getc  # NOTE only tested on OS X
+def getc # NOTE only tested on OS X
   system "/bin/stty raw -echo"
   if STDIN.respond_to?(:getbyte)
     STDIN.getbyte
