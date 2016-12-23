@@ -18,8 +18,11 @@ if mac?
   HOMEBREW_CACHE = "/Library/Caches/Homebrew"
   HOMEBREW_REPO = "https://github.com/Homebrew/brew"
 else
+  linuxbrew_suffix = ENV["LINUXBREW_SUFFIX"] || ""
+  linuxbrew_suffix = "-#{linuxbrew_suffix}" unless linuxbrew_suffix.empty?
+
   HOMEBREW_NAME = "Linuxbrew"
-  HOMEBREW_PREFIX = "#{ENV["HOME"]}/.linuxbrew"
+  HOMEBREW_PREFIX = "#{ENV["HOME"]}/.linuxbrew#{linuxbrew_suffix}"
   HOMEBREW_CACHE = "#{ENV["HOME"]}/.cache/Homebrew"
   HOMEBREW_REPO = "https://github.com/Linuxbrew/brew"
 end
@@ -295,6 +298,17 @@ ohai "Installation successful!"
 ohai "Next steps"
 
 if !mac?
+  linuxbrew_env_str = <<-EOS
+export PATH="#{HOMEBREW_PREFIX}/bin:$PATH"
+export MANPATH="#{HOMEBREW_PREFIX}/share/man:$MANPATH"
+export INFOPATH="#{HOMEBREW_PREFIX}/share/info:$INFOPATH"
+EOS
+
+  env_file_path = ENV["LINUXBREW_GEN_ENV_FILE_AT"] || ""
+  if env_file_path == "auto"
+    env_file_path = "#{HOMEBREW_PREFIX}.env"
+  end
+
   puts <<-EOS
 Install the Linuxbrew dependencies:
 
@@ -307,12 +321,14 @@ Install the Linuxbrew dependencies:
 See http://linuxbrew.sh/#dependencies for more information.
 
 Add to your #{Tty.white}#{shell_profile}#{Tty.reset} by running
-  echo 'export PATH="#{HOMEBREW_PREFIX}/bin:$PATH"' >>#{shell_profile}
-  echo 'export MANPATH="#{HOMEBREW_PREFIX}/share/man:$MANPATH"' >>#{shell_profile}
-  echo 'export INFOPATH="#{HOMEBREW_PREFIX}/share/info:$INFOPATH"' >>#{shell_profile}
+  #{linuxbrew_env_str.split("\n").map {|l| "echo '#{l}' >>#{shell_profile}" }.join("\n  ")}
 
 We recommend you install #{Tty.white}GCC#{Tty.reset} by running `brew install gcc`.
 EOS
+  unless env_file_path.empty?
+    puts "Also generating an environment setup script at '#{env_file_path}'"
+    IO.write(env_file_path, linuxbrew_env_str)
+  end
 elsif macos_version < "10.9" && macos_version > "10.6"
   `/usr/bin/cc --version 2> /dev/null` =~ %r[clang-(\d{2,})]
   version = $1.to_i
