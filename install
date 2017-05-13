@@ -23,7 +23,7 @@ if mac?
 else
   HOMEBREW_NAME = "Linuxbrew".freeze
   HOMEBREW_PREFIX = "#{ENV["HOME"]}/.linuxbrew".freeze
-  HOMEBREW_REPOSITORY = "#{ENV["HOME"]}/.linuxbrew".freeze
+  HOMEBREW_REPOSITORY = "#{ENV["HOME"]}/.linuxbrew/Homebrew".freeze
   HOMEBREW_CACHE = "#{ENV["HOME"]}/.cache/Homebrew".freeze
   HOMEBREW_OLD_CACHE = nil
   BREW_REPO = "https://github.com/Linuxbrew/brew".freeze
@@ -249,6 +249,7 @@ chgrps = chmods.select { |d| chgrp?(d) }
 mkdirs = %w[Cellar bin etc include lib opt sbin share share/zsh share/zsh/site-functions var].
          map { |d| File.join(HOMEBREW_PREFIX, d) }.
          reject { |d| File.directory?(d) }
+mkdirs << HOMEBREW_REPOSITORY unless mkdirs.include?(HOMEBREW_REPOSITORY) || File.directory?(HOMEBREW_REPOSITORY)
 
 group = `id -gn`.chomp
 odie "error: id -gn: failed" unless $?.success? && !group.empty?
