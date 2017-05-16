@@ -82,10 +82,21 @@ def system(*args)
   abort "Failed during: #{args.shell_s}" unless Kernel.system(*args)
 end
 
+def have_sudo?
+  return $have_sudo unless $have_sudo.nil?
+  Kernel.system "/usr/bin/sudo", "-v"
+  $have_sudo = $? && $?.success?
+end
+
 def sudo(*args)
-  args.unshift("-A") unless ENV["SUDO_ASKPASS"].nil?
-  ohai "/usr/bin/sudo", *args
-  system "/usr/bin/sudo", *args
+  if have_sudo?
+    args.unshift("-A") unless ENV["SUDO_ASKPASS"].nil?
+    ohai "/usr/bin/sudo", *args
+    system "/usr/bin/sudo", *args
+  else
+    ohai *args
+    system *args
+  end
 end
 
 def getc # NOTE only tested on OS X
