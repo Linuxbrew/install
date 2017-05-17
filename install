@@ -22,8 +22,7 @@ if mac?
   CORE_TAP_REPO = "https://github.com/Homebrew/homebrew-core".freeze
 else
   HOMEBREW_NAME = "Linuxbrew".freeze
-  HOMEBREW_PREFIX = "/home/linuxbrew/.linuxbrew".freeze
-  HOMEBREW_REPOSITORY = "/home/linuxbrew/.linuxbrew/Homebrew".freeze
+  HOMEBREW_PREFIX_DEFAULT = "/home/linuxbrew/.linuxbrew".freeze
   HOMEBREW_CACHE = "#{ENV["HOME"]}/.cache/Homebrew".freeze
   HOMEBREW_OLD_CACHE = nil
   BREW_REPO = "https://github.com/Linuxbrew/brew".freeze
@@ -214,6 +213,27 @@ abort "Don't run this as root!" if Process.uid.zero?
 abort <<-EOABORT unless !mac? || `dsmemberutil checkmembership -U "#{ENV["USER"]}" -G admin`.include?("user is a member")
 This script requires the user #{ENV["USER"]} to be an Administrator.
 EOABORT
+
+unless mac?
+  if File.writable?(HOMEBREW_PREFIX_DEFAULT) || File.writable?("/home/linuxbrew") || File.writable?("/home")
+    HOMEBREW_PREFIX = HOMEBREW_PREFIX_DEFAULT.freeze
+  else
+    Kernel.system "/usr/bin/sudo -n -v 2>/dev/null"
+    unless $?.success?
+      ohai "Select the Linuxbrew installation directory"
+      puts "- #{Tty.bold}Enter your password#{Tty.reset} to install to #{Tty.underline}#{HOMEBREW_PREFIX_DEFAULT}#{Tty.reset} (#{Tty.bold}recommended#{Tty.reset})"
+      puts "- #{Tty.bold}Press Control-D#{Tty.reset} to install to #{Tty.underline}#{ENV["HOME"]}/.linuxbrew#{Tty.reset}"
+      puts "- #{Tty.bold}Press Control-C#{Tty.reset} to cancel installation"
+    end
+    if sudo?
+      HOMEBREW_PREFIX = HOMEBREW_PREFIX_DEFAULT.freeze
+    else
+      HOMEBREW_PREFIX = "#{ENV["HOME"]}/.linuxbrew".freeze
+    end
+  end
+  HOMEBREW_REPOSITORY = "#{HOMEBREW_PREFIX}/Homebrew".freeze
+end
+
 # Tests will fail if the prefix exists, but we don't have execution
 # permissions. Abort in this case.
 abort <<-EOABORT if File.directory?(HOMEBREW_PREFIX) && (!File.executable? HOMEBREW_PREFIX)
@@ -394,7 +414,7 @@ ohai "Next steps:"
 
 if !mac?
   puts <<-EOS
-- Install the Linuxbrew dependencies:
+- Install the Linuxbrew dependencies if you have sudo access:
   #{Tty.bold}Debian, Ubuntu, etc.#{Tty.reset}
     sudo apt-get install build-essential
   #{Tty.bold}Fedora, Red Hat, CentOS, etc.#{Tty.reset}
@@ -405,7 +425,7 @@ if !mac?
     echo 'export MANPATH="#{HOMEBREW_PREFIX}/share/man:$MANPATH"' >>#{shell_profile}
     echo 'export INFOPATH="#{HOMEBREW_PREFIX}/share/info:$INFOPATH"' >>#{shell_profile}
 - Add Linuxbrew to your #{Tty.bold}PATH#{Tty.reset}
-    PATH="$HOME/.linuxbrew/bin:$PATH"
+    PATH="#{HOMEBREW_PREFIX}/bin:$PATH"
 - We recommend that you install GCC by running:
     brew install gcc
 EOS
