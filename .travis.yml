@@ -9,7 +9,7 @@ script:
   - rubocop
   - ./install --force-curl
   - ./uninstall -f || true
-  - rm -rf ~/.linuxbrew
+  - sudo rm -rf /home/linuxbrew/.linuxbrew
   - ./install
-  - ~/.linuxbrew/bin/brew install ack
+  - /home/linuxbrew/.linuxbrew/bin/brew install ack
   - ./uninstall -f || true
