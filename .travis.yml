@@ -8,7 +8,8 @@ script:
   - gem install rubocop
   - rubocop
   - ./install --force-curl
-  - ./uninstall -f
+  - ./uninstall -f || true
+  - rm -rf ~/.linuxbrew
   - ./install
   - ~/.linuxbrew/bin/brew install ack
-  - ./uninstall -f
+  - ./uninstall -f || true
