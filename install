@@ -390,6 +390,8 @@ Dir.chdir HOMEBREW_REPOSITORY do
   end
 end
 
+system "#{HOMEBREW_PREFIX}/bin/brew", "tap", "linuxbrew/xorg" unless mac?
+
 ohai "Installation successful!"
 puts
 
