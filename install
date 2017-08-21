@@ -390,7 +390,10 @@ Dir.chdir HOMEBREW_REPOSITORY do
   end
 end
 
-system "#{HOMEBREW_PREFIX}/bin/brew", "tap", "linuxbrew/xorg" unless mac?
+# Tap linuxbrew/xorg to ensure :x11 dependencies are available
+# Ensure $HOMEBREW_PREFIX/bin is in PATH so Git is usable after installation
+system "env", "PATH=#{HOMEBREW_PREFIX}/bin:#{ENV["PATH"]}", "brew", "tap",
+  "linuxbrew/xorg" unless mac?
 
 ohai "Installation successful!"
 puts
