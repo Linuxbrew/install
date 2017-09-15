@@ -22,7 +22,7 @@ if mac?
   CORE_TAP_REPO = "https://github.com/Homebrew/homebrew-core".freeze
 else
   HOMEBREW_NAME = "Linuxbrew".freeze
-  HOMEBREW_PREFIX_DEFAULT = "/home/linuxbrew/.linuxbrew".freeze
+  HOMEBREW_PREFIX_DEFAULT = (ENV["HOMEBREW_PREFIX"] || "/home/linuxbrew") + "/.linuxbrew".freeze
   HOMEBREW_CACHE = "#{ENV["HOME"]}/.cache/Homebrew".freeze
   HOMEBREW_OLD_CACHE = nil
   BREW_REPO = "https://github.com/Linuxbrew/brew".freeze
@@ -215,7 +215,8 @@ This script requires the user #{ENV["USER"]} to be an Administrator.
 EOABORT
 
 unless mac?
-  if File.writable?(HOMEBREW_PREFIX_DEFAULT) || File.writable?("/home/linuxbrew") || File.writable?("/home")
+  if File.writable?(HOMEBREW_PREFIX_DEFAULT) || File.writable?(File.dirname(HOMEBREW_PREFIX_DEFAULT))
+    @have_sudo = false
     HOMEBREW_PREFIX = HOMEBREW_PREFIX_DEFAULT.freeze
   else
     Kernel.system "/usr/bin/sudo -n -v 2>/dev/null"
