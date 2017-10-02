@@ -390,8 +390,8 @@ Dir.chdir HOMEBREW_REPOSITORY do
   end
 end
 
-# Tap linuxbrew/xorg to ensure :x11 dependencies are available
-# Ensure $HOMEBREW_PREFIX/bin is in PATH so Git is usable after installation
+# Tap linuxbrew/xorg to ensure :x11 dependencies are available.
+# Ensure $HOMEBREW_PREFIX/bin is in PATH so the brewed git is usable
 system({"PATH" => "#{HOMEBREW_PREFIX}/bin:#{ENV["PATH"]}"},
   "brew", "tap", "linuxbrew/xorg") unless mac?
 
