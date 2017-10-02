@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
-# This script installs only to /usr/local on Mac or ~/.linuxbrew on Linux.
+# This script installs only to /usr/local on Mac.
+# On Linux, it installs to /home/linuxbrew/.linuxbrew if you have sudo access
+# and ~/.linuxbrew otherwise.
 # To install elsewhere you can just untar
 # https://github.com/Homebrew/homebrew/tarball/master anywhere you like or
 # change the value of HOMEBREW_PREFIX.
