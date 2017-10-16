@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # This script installs only to /usr/local on Mac.
-# On Linux, it installs to /home/linuxbrew/.linuxbrew if you have sudo access
+# On Linux, it installs to /usr/local if you have sudo access
 # and ~/.linuxbrew otherwise.
 # To install elsewhere you can just untar
 # https://github.com/Homebrew/homebrew/tarball/master anywhere you like or
@@ -24,7 +24,7 @@ if mac?
   CORE_TAP_REPO = "https://github.com/Homebrew/homebrew-core".freeze
 else
   HOMEBREW_NAME = "Linuxbrew".freeze
-  HOMEBREW_PREFIX_DEFAULT = "/home/linuxbrew/.linuxbrew".freeze
+  HOMEBREW_PREFIX_DEFAULT = "/usr/local".freeze
   HOMEBREW_CACHE = "#{ENV["HOME"]}/.cache/Homebrew".freeze
   HOMEBREW_OLD_CACHE = nil
   BREW_REPO = "https://github.com/Linuxbrew/brew".freeze

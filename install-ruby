@@ -1,10 +1,11 @@
 #!/bin/sh
 set -eu
 
-if test -w /home/linuxbrew || sudo -v; then
-	prefix=/home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/vendor
-	test -d /home/linuxbrew || sudo mkdir -p /home/linuxbrew
-	test -w /home/linuxbrew || sudo chown $USER: /home/linuxbrew
+brew_prefix=/usr/local
+
+if test -w $brew_prefix || sudo -v; then
+	prefix=$brew_prefix/Homebrew/Library/Homebrew/vendor
+	test -w $brew_prefix || sudo chown $USER: $brew_prefix
 else
 	prefix=~/.linuxbrew/Homebrew/Library/Homebrew/vendor
 fi
