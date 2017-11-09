@@ -194,10 +194,9 @@ end
 # return the shell profile file based on users' preference shell
 def shell_profile
   case ENV["SHELL"]
-  when %r{/(ba)?sh} then "~/.bash_profile"
-  when %r{/zsh} then "~/.zshrc"
-  when %r{/ksh} then "~/.kshrc"
-  else "~/.bash_profile"
+  when %r{/bash} && File.writable?("~/.bash_profile") then "~/.bash_profile"
+  when %r{/zsh} then "~/.zprofile"
+  else "~/.profile"
   end
 end
 
