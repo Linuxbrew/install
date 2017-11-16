@@ -9,10 +9,11 @@ else
 	prefix=~/.linuxbrew/Homebrew/Library/Homebrew/vendor
 fi
 version=2.3.3
+tag=`uname -m`_`uname -s | tr A-Z a-z`
 
 echo >&2 "==> Installing Ruby to $prefix"
 mkdir -p $prefix
-curl -L https://homebrew.bintray.com/bottles-portable/portable-ruby-$version.x86_64_linux.bottle.tar.gz \
+curl -L https://homebrew.bintray.com/bottles-portable/portable-ruby-$version.$tag.bottle.tar.gz \
 	| tar -xz -C $prefix
 echo >&2 '==> Installing successful'
 
