@@ -8,7 +8,7 @@ if test -w /home/linuxbrew || sudo -v; then
 else
 	prefix=~/.linuxbrew/Homebrew/Library/Homebrew/vendor
 fi
-version=2.0.0-p648
+version=2.3.3
 
 echo >&2 "==> Installing Ruby to $prefix"
 mkdir -p $prefix
