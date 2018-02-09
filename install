@@ -273,7 +273,7 @@ mkdirs = %w[Cellar Homebrew bin etc include lib opt sbin share share/zsh share/z
 mkdirs << HOMEBREW_REPOSITORY unless mkdirs.include?(HOMEBREW_REPOSITORY) || File.directory?(HOMEBREW_REPOSITORY)
 
 group = `id -gn`.chomp
-odie "error: id -gn: failed" unless $?.success? && !group.empty?
+abort "error: id -gn: failed" unless $?.success? && !group.empty?
 
 unless group_chmods.empty?
   ohai "The following existing directories will be made group writable:"
