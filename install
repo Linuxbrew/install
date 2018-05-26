@@ -433,7 +433,7 @@ if !mac?
 - We recommend that you install GCC by running:
     brew install gcc
 - After modifying your shell profile, you may need to restart your session
-(logout and then log back in) if the brew command isn't found.
+  (logout and then log back in) if the brew command isn't found.
 EOS
 elsif macos_version < "10.9" && macos_version > "10.6"
   `/usr/bin/cc --version 2> /dev/null` =~ /clang-(\d{2,})/
