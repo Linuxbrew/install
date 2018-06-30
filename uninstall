@@ -308,7 +308,6 @@ end
 unless options[:quiet]
   if @failed
     warn "Homebrew partially uninstalled (but there were steps that failed)!"
-    puts "To finish uninstalling rerun this script with `sudo`."
   else
     ohai "Homebrew uninstalled!"
   end
