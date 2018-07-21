@@ -8,7 +8,7 @@ if test -w /home/linuxbrew || sudo -v; then
 else
 	prefix=~/.linuxbrew/Homebrew/Library/Homebrew/vendor
 fi
-version='2.3.3_2'
+version=2.3.7
 tag=`uname -m`_`uname -s | tr A-Z a-z`
 
 echo >&2 "==> Installing Ruby to $prefix"
