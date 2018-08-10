@@ -85,7 +85,7 @@ end
 
 def sudo?
   return @have_sudo unless @have_sudo.nil?
-  Kernel.system "/usr/bin/sudo", "-v"
+  Kernel.system "/usr/bin/sudo", "-ln", "mkdir"
   @have_sudo = $? && $?.success?
 end
 
