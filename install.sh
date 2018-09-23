@@ -1,5 +1,7 @@
 #!/bin/sh
-set -eu
+set -e
 umask 022
-which ruby >/dev/null || eval "`curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install-ruby`"
-exec ruby -e "`curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install`"
+if test -n "$HOMEBREW_FORCE_VENDOR_RUBY" || ! command -v ruby >/dev/null; then
+	eval "`curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install-ruby`"
+fi
+exec ruby -e "`curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install`" "$@"

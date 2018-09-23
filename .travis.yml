@@ -12,7 +12,7 @@ script:
   - ./install --force-curl
   - ./uninstall -f || true
   - sudo rm -rf /home/linuxbrew/.linuxbrew
-  - ./install
+  - ./install.sh
   - /home/linuxbrew/.linuxbrew/bin/brew install ack
   - ./uninstall -f || true
 
