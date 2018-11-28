@@ -482,9 +482,7 @@ if !mac?
     sudo yum groupinstall 'Development Tools'
   See #{Tty.underline}http://linuxbrew.sh/#dependencies#{Tty.reset} for more information.
 - Add Linuxbrew to your #{Tty.underline}#{shell_profile}#{Tty.reset} by running
-    echo 'export PATH="#{HOMEBREW_PREFIX}/bin:$PATH"' >>#{shell_profile}
-    echo 'export MANPATH="#{HOMEBREW_PREFIX}/share/man:$MANPATH"' >>#{shell_profile}
-    echo 'export INFOPATH="#{HOMEBREW_PREFIX}/share/info:$INFOPATH"' >>#{shell_profile}
+    echo 'eval $(#{HOMEBREW_PREFIX}/bin/brew shellenv)' >>#{shell_profile}
 - Add Linuxbrew to your #{Tty.bold}PATH#{Tty.reset}
     PATH="#{HOMEBREW_PREFIX}/bin:$PATH"
 - We recommend that you install GCC by running:
