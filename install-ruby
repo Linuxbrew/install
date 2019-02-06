@@ -1,6 +1,14 @@
 #!/bin/sh
 set -eu
 
+version=2.3.7
+
+case $(uname -m) in
+  x86_64) tag=x86_64_linux;;
+  armv[67]*) tag=armv6_linux;;
+  *) echo "Error: Your CPU $(uname -m) is not supported." >&2; exit 1 ;;
+esac
+
 if test -w /home/linuxbrew || sudo -v; then
 	prefix=/home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/vendor
 	test -d /home/linuxbrew || sudo mkdir -p /home/linuxbrew
@@ -8,8 +16,6 @@ if test -w /home/linuxbrew || sudo -v; then
 else
 	prefix=~/.linuxbrew/Homebrew/Library/Homebrew/vendor
 fi
-version=2.3.7
-tag=`uname -m`_`uname -s | tr A-Z a-z`
 
 echo >&2 "==> Installing Ruby to $prefix"
 mkdir -p $prefix
