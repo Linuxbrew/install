@@ -227,10 +227,12 @@ at_exit { Kernel.system "/usr/bin/sudo", "-k" } unless $CHILD_STATUS.success?
 Dir.chdir "/usr"
 
 ####################################################################### script
+user = `id -un`.chomp
+
 abort "Mac OS X too old, see: https://github.com/mistydemeo/tigerbrew" if mac? && macos_version < "10.5"
 abort "Don't run this as root!" if Process.uid.zero?
-abort <<-EOABORT unless !mac? || `dsmemberutil checkmembership -U "#{ENV["USER"]}" -G admin`.include?("user is a member")
-This script requires the user #{ENV["USER"]} to be an Administrator.
+abort <<-EOABORT unless !mac? || `dsmemberutil checkmembership -U "#{user}" -G admin`.include?("user is a member")
+This script requires the user #{user} to be an Administrator.
 EOABORT
 
 unless mac?
@@ -335,7 +337,7 @@ unless user_chmods.empty?
   puts(*user_chmods)
 end
 unless chowns.empty?
-  ohai "The following existing directories will have their owner set to #{Tty.underline}#{ENV["USER"]}#{Tty.reset}:"
+  ohai "The following existing directories will have their owner set to #{Tty.underline}#{user}#{Tty.reset}:"
   puts(*chowns)
 end
 unless chgrps.empty?
@@ -356,25 +358,25 @@ if File.directory? HOMEBREW_PREFIX
   sudo "/bin/chmod", "u+rwx", *chmods unless chmods.empty?
   sudo "/bin/chmod", "g+rwx", *group_chmods unless group_chmods.empty?
   sudo "/bin/chmod", "755", *user_chmods unless user_chmods.empty?
-  sudo "/bin/chown", ENV["USER"], *chowns unless chowns.empty?
+  sudo "/bin/chown", user, *chowns unless chowns.empty?
   sudo "/bin/chgrp", group, *chgrps unless chgrps.empty?
 else
   sudo "/bin/mkdir", "-p", HOMEBREW_PREFIX
-  sudo "/bin/chown", "#{ENV["USER"]}:#{group}", HOMEBREW_PREFIX
+  sudo "/bin/chown", "#{user}:#{group}", HOMEBREW_PREFIX
 end
 
 unless mkdirs.empty?
   sudo "/bin/mkdir", "-p", *mkdirs
   sudo "/bin/chmod", "g+rwx", *mkdirs
   sudo "/bin/chmod", "755", *zsh_dirs
-  sudo "/bin/chown", ENV["USER"], *mkdirs
+  sudo "/bin/chown", user, *mkdirs
   sudo "/bin/chgrp", group, *mkdirs
 end
 
 [HOMEBREW_CACHE, HOMEBREW_OLD_CACHE].compact.each do |cache|
   sudo "/bin/mkdir", "-p", cache unless File.directory? cache
   sudo "/bin/chmod", "g+rwx", cache if chmod? cache
-  sudo "/bin/chown", ENV["USER"], cache if chown? cache
+  sudo "/bin/chown", user, cache if chown? cache
   sudo "/bin/chgrp", group, cache if chgrp? cache
 end
 

@@ -12,7 +12,7 @@ esac
 if test -w /home/linuxbrew || sudo -v; then
 	prefix=/home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/vendor
 	test -d /home/linuxbrew || sudo mkdir -p /home/linuxbrew
-	test -w /home/linuxbrew || sudo chown $USER: /home/linuxbrew
+	test -w /home/linuxbrew || sudo chown `id -un`: /home/linuxbrew
 else
 	prefix=~/.linuxbrew/Homebrew/Library/Homebrew/vendor
 fi
