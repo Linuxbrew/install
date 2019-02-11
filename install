@@ -94,8 +94,10 @@ end
 def sudo?
   return @have_sudo unless @have_sudo.nil?
 
-  Kernel.system "/usr/bin/sudo", "-v"
-  @have_sudo = $CHILD_STATUS && $CHILD_STATUS.success?
+  Kernel.system "/usr/bin/sudo", "-l", "mkdir"
+  @have_sudo = $CHILD_STATUS.success?
+rescue Interrupt
+  exit
 end
 
 def sudo(*args)
@@ -237,8 +239,8 @@ unless mac?
   if File.writable?(HOMEBREW_PREFIX_DEFAULT) || File.writable?("/home/linuxbrew") || File.writable?("/home")
     HOMEBREW_PREFIX = HOMEBREW_PREFIX_DEFAULT.freeze
   else
-    Kernel.system "/usr/bin/sudo -n -v 2>/dev/null"
-    unless $CHILD_STATUS.success?
+    sudo_output = `/usr/bin/sudo -n -l mkdir 2>&1`
+    if !$CHILD_STATUS.success? && sudo_output == "sudo: a password is required\n"
       ohai "Select the Linuxbrew installation directory"
       puts "- #{Tty.bold}Enter your password#{Tty.reset} to install to #{Tty.underline}#{HOMEBREW_PREFIX_DEFAULT}#{Tty.reset} (#{Tty.bold}recommended#{Tty.reset})"
       puts "- #{Tty.bold}Press Control-D#{Tty.reset} to install to #{Tty.underline}#{ENV["HOME"]}/.linuxbrew#{Tty.reset}"
