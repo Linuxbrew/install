@@ -5,6 +5,7 @@ version=2.3.7
 
 case $(uname -m) in
   x86_64) tag=x86_64_linux;;
+  aarch64) tag=aarch64_linux;;
   armv[67]*) tag=armv6_linux;;
   *) echo "Error: Your CPU $(uname -m) is not supported." >&2; exit 1 ;;
 esac
