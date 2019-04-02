@@ -7,7 +7,7 @@
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
 ```
 
-More installation information and options at http://linuxbrew.sh/#installation
+More installation information and options at https://docs.brew.sh/Homebrew-on-Linux#install
 
 ## Uninstall Linuxbrew
 ```bash
