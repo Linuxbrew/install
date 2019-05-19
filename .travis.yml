@@ -13,6 +13,9 @@ script:
   - ./uninstall -f || true
   - sudo rm -rf /home/linuxbrew/.linuxbrew
   - ./install.sh
+  - /home/linuxbrew/.linuxbrew/bin/brew config
+  - /home/linuxbrew/.linuxbrew/bin/brew install gcc
+  - /home/linuxbrew/.linuxbrew/bin/brew test gcc
   - /home/linuxbrew/.linuxbrew/bin/brew install ack
   - ./uninstall -f || true
 
