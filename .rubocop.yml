@@ -1,6 +1,9 @@
 # keep consistent (other than a few Ruby 1.8 compatible changes) with:
 # https://github.com/Homebrew/brew/blob/master/Library/.rubocop.yml
 
+AllCops:
+  TargetRubyVersion: 2.3
+
 # `system` is a special case and aligns on second argument
 Layout/AlignParameters:
   Enabled: false
