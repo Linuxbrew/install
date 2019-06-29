@@ -363,7 +363,7 @@ if File.directory? HOMEBREW_PREFIX
   sudo "/bin/chmod", "u+rwx", *chmods unless chmods.empty?
   sudo "/bin/chmod", "g+rwx", *group_chmods unless group_chmods.empty?
   sudo "/bin/chmod", "755", *user_chmods unless user_chmods.empty?
-  sudo "/bin/chown", user, *chowns unless chowns.empty?
+  sudo "/bin/chown", ENV["USER"], *chowns unless chowns.empty?
   sudo "/bin/chgrp", group, *chgrps unless chgrps.empty?
 else
   sudo "/bin/mkdir", "-p", HOMEBREW_PREFIX
@@ -374,14 +374,14 @@ unless mkdirs.empty?
   sudo "/bin/mkdir", "-p", *mkdirs
   sudo "/bin/chmod", "g+rwx", *mkdirs
   sudo "/bin/chmod", "755", *zsh_dirs
-  sudo "/bin/chown", user, *mkdirs
+  sudo "/bin/chown", ENV["USER"], *mkdirs
   sudo "/bin/chgrp", group, *mkdirs
 end
 
 [HOMEBREW_CACHE, HOMEBREW_OLD_CACHE].compact.each do |cache|
   sudo "/bin/mkdir", "-p", cache unless File.directory? cache
   sudo "/bin/chmod", "g+rwx", cache if chmod? cache
-  sudo "/bin/chown", user, cache if chown? cache
+  sudo "/bin/chown", ENV["USER"], cache if chown? cache
   sudo "/bin/chgrp", group, cache if chgrp? cache
 end
 
