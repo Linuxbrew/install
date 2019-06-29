@@ -10,6 +10,8 @@ case $(uname -m) in
   *) echo "Error: Your CPU $(uname -m) is not supported." >&2; exit 1 ;;
 esac
 
+USER=${USER:-`id -un`}
+
 if test -w /home/linuxbrew || /usr/bin/sudo -p "[sudo] Enter password for $USER to install Ruby: " mkdir -p /home/linuxbrew; then
 	prefix=/home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/vendor
 	test -w /home/linuxbrew || sudo chown $USER: /home/linuxbrew
