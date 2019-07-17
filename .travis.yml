@@ -2,20 +2,27 @@ language: ruby
 os: linux
 dist: trusty
 sudo: required
-rvm: 2.3.7
 
-before_script:
-  - gem install rubocop
-
-script:
-  - rubocop
-  - ./install --force-curl
-  - ./uninstall -f || true
-  - sudo rm -rf /home/linuxbrew/.linuxbrew
-  - ./install.sh
-  - /home/linuxbrew/.linuxbrew/bin/brew install ack
-  - ./uninstall -f || true
-
+jobs:
+  include:
+    - rvm: 2.2.0
+      gemfile: Gemfile.ruby-2.2.0
+      script:
+        - bundle exec rubocop
+        - ./install.sh
+        - /home/linuxbrew/.linuxbrew/bin/brew install ack
+        - export PATH=/home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/vendor/portable-ruby/current/bin:$PATH
+        - ./uninstall -f || true
+    - rvm: 2.3.7
+      gemfile: Gemfile
+      script:
+        - bundle exec rubocop
+        - ./install --force-curl
+        - ./uninstall -f || true
+        - sudo rm -rf /home/linuxbrew/.linuxbrew
+        - ./install.sh
+        - /home/linuxbrew/.linuxbrew/bin/brew install ack
+        - ./uninstall -f || true
 branches:
   only:
     - master
