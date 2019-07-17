@@ -265,6 +265,8 @@ def sudo?
 
   Kernel.system "/usr/bin/sudo", "-v"
   @have_sudo = $CHILD_STATUS.success?
+rescue Interrupt
+  exit
 end
 
 def sudo(*args)
