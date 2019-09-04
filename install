@@ -214,7 +214,7 @@ end
 # return the shell profile file based on users' preference shell
 def shell_profile
   case ENV["SHELL"]
-  when %r{/bash$} && File.readable?("~/.bash_profile") then "~/.bash_profile"
+  when %r{/bash$} then File.readable?("#{ENV["HOME"]}/.bash_profile") ? "~/.bash_profile" : "~/.profile"
   when %r{/zsh$} then "~/.zprofile"
   else "~/.profile"
   end
