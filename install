@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# This script installs only to /usr/local on macOS.
+# On macOS, this script installs to /usr/local only.
 # On Linux, it installs to /home/linuxbrew/.linuxbrew if you have sudo access
 # and ~/.linuxbrew otherwise.
 # To install elsewhere (which is unsupported) you can untar
@@ -10,25 +10,16 @@ def mac?
   RUBY_PLATFORM[/darwin/]
 end
 
-def linux?
-  RUBY_PLATFORM[/linux/]
-end
-
+BREW_REPO = "https://github.com/Homebrew/brew".freeze
 if mac?
-  HOMEBREW_NAME = "Homebrew".freeze
   HOMEBREW_PREFIX = "/usr/local".freeze
   HOMEBREW_REPOSITORY = "/usr/local/Homebrew".freeze
   HOMEBREW_CACHE = "#{ENV["HOME"]}/Library/Caches/Homebrew".freeze
-  BREW_REPO = "https://github.com/Homebrew/brew".freeze
-  CORE_TAP_REPO = "https://github.com/Homebrew/homebrew-core".freeze
   CHOWN = "/usr/sbin/chown".freeze
   CHGRP = "/usr/bin/chgrp".freeze
 else
-  HOMEBREW_NAME = "Linuxbrew".freeze
   HOMEBREW_PREFIX_DEFAULT = "/home/linuxbrew/.linuxbrew".freeze
   HOMEBREW_CACHE = "#{ENV["HOME"]}/.cache/Homebrew".freeze
-  BREW_REPO = "https://github.com/Homebrew/brew".freeze
-  CORE_TAP_REPO = "https://github.com/Linuxbrew/homebrew-core".freeze
   CHOWN = "/bin/chown".freeze
   CHGRP = "/bin/chgrp".freeze
 end
@@ -215,7 +206,7 @@ unless mac?
   else
     sudo_output = `/usr/bin/sudo -n -l mkdir 2>&1`
     if !$CHILD_STATUS.success? && sudo_output == "sudo: a password is required\n"
-      ohai "Select the Linuxbrew installation directory"
+      ohai "Select the Homebrew installation directory"
       puts "- #{Tty.bold}Enter your password#{Tty.reset} to install to #{Tty.underline}#{HOMEBREW_PREFIX_DEFAULT}#{Tty.reset} (#{Tty.bold}recommended#{Tty.reset})"
       puts "- #{Tty.bold}Press Control-D#{Tty.reset} to install to #{Tty.underline}#{ENV["HOME"]}/.linuxbrew#{Tty.reset}"
       puts "- #{Tty.bold}Press Control-C#{Tty.reset} to cancel installation"
@@ -410,7 +401,7 @@ Xcode.app or running:
     sudo xcodebuild -license
 EOABORT
 
-ohai "Downloading and installing #{HOMEBREW_NAME}..."
+ohai "Downloading and installing Homebrew..."
 Dir.chdir HOMEBREW_REPOSITORY do
   # we do it in four steps to avoid merge errors when reinstalling
   system "git", "init", "-q"
@@ -460,15 +451,15 @@ ohai "Next steps:"
 
 unless mac?
   puts <<-EOS
-- Install the Linuxbrew dependencies if you have sudo access:
+- Install the Homebrew dependencies if you have sudo access:
   #{Tty.bold}Debian, Ubuntu, etc.#{Tty.reset}
     sudo apt-get install build-essential
   #{Tty.bold}Fedora, Red Hat, CentOS, etc.#{Tty.reset}
     sudo yum groupinstall 'Development Tools'
-  See #{Tty.underline}http://linuxbrew.sh/#dependencies#{Tty.reset} for more information.
-- Configure Linuxbrew in your #{Tty.underline}#{shell_profile}#{Tty.reset} by running
+  See #{Tty.underline}https://docs.brew.sh/linux#{Tty.reset} for more information.
+- Configure Homebrew in your #{Tty.underline}#{shell_profile}#{Tty.reset} by running
     echo 'eval $(#{HOMEBREW_PREFIX}/bin/brew shellenv)' >>#{shell_profile}
-- Add Linuxbrew to your #{Tty.bold}PATH#{Tty.reset}
+- Add Homebrew to your #{Tty.bold}PATH#{Tty.reset}
     eval $(#{HOMEBREW_PREFIX}/bin/brew shellenv)
 - We recommend that you install GCC by running:
     brew install gcc
