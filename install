@@ -6,6 +6,8 @@
 # https://github.com/Homebrew/brew/tarball/master anywhere you like.
 # or set the environment variable HOMEBREW_PREFIX.
 
+require "fileutils"
+
 def mac?
   RUBY_PLATFORM[/darwin/]
 end
@@ -350,7 +352,7 @@ sudo "/bin/mkdir", "-p", HOMEBREW_CACHE unless File.directory? HOMEBREW_CACHE
 sudo "/bin/chmod", "g+rwx", HOMEBREW_CACHE if chmod? HOMEBREW_CACHE
 sudo CHOWN, ENV["USER"], HOMEBREW_CACHE if chown? HOMEBREW_CACHE
 sudo CHGRP, group, HOMEBREW_CACHE if chgrp? HOMEBREW_CACHE
-system "/usr/bin/touch", "#{HOMEBREW_CACHE}/.cleaned" if File.directory? HOMEBREW_CACHE
+FileUtils.touch "#{HOMEBREW_CACHE}/.cleaned" if File.directory? HOMEBREW_CACHE
 
 if should_install_command_line_tools?
   ohai "Searching online for the Command Line Tools"
