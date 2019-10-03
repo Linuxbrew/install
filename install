@@ -15,11 +15,13 @@ if mac?
   HOMEBREW_PREFIX = "/usr/local".freeze
   HOMEBREW_REPOSITORY = "/usr/local/Homebrew".freeze
   HOMEBREW_CACHE = "#{ENV["HOME"]}/Library/Caches/Homebrew".freeze
+  HOME_CACHE = nil
   CHOWN = "/usr/sbin/chown".freeze
   CHGRP = "/usr/bin/chgrp".freeze
 else
   HOMEBREW_PREFIX_DEFAULT = "/home/linuxbrew/.linuxbrew".freeze
-  HOMEBREW_CACHE = "#{ENV["HOME"]}/.cache/Homebrew".freeze
+  HOME_CACHE = "#{ENV["HOME"]}/.cache".freeze
+  HOMEBREW_CACHE = "#{HOME_CACHE}/Homebrew".freeze
   CHOWN = "/bin/chown".freeze
   CHGRP = "/bin/chgrp".freeze
 end
@@ -350,6 +352,10 @@ sudo "/bin/mkdir", "-p", HOMEBREW_CACHE unless File.directory? HOMEBREW_CACHE
 sudo "/bin/chmod", "g+rwx", HOMEBREW_CACHE if chmod? HOMEBREW_CACHE
 sudo CHOWN, ENV["USER"], HOMEBREW_CACHE if chown? HOMEBREW_CACHE
 sudo CHGRP, group, HOMEBREW_CACHE if chgrp? HOMEBREW_CACHE
+if HOME_CACHE
+  sudo CHOWN, ENV["USER"], HOME_CACHE if chown? HOME_CACHE
+  sudo CHGRP, group, HOME_CACHE if chgrp? HOME_CACHE
+end
 system "/usr/bin/touch", "#{HOMEBREW_CACHE}/.cleaned" if File.directory? HOMEBREW_CACHE
 
 if should_install_command_line_tools?
