@@ -10,7 +10,7 @@ case $(uname -m) in
   *) echo "Error: Your CPU $(uname -m) is not supported." >&2; exit 1 ;;
 esac
 
-USER=${USER:-`id -un`}
+USER=${USER:-$(id -un)}
 
 if test -w /home/linuxbrew || /usr/bin/sudo -p "[sudo] Enter password for $USER to install Ruby: " mkdir -p /home/linuxbrew; then
 	prefix=/home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/vendor
@@ -27,7 +27,7 @@ ln -sf $version $prefix/portable-ruby/current
 echo >&2 '==> Installing successful'
 
 export "PATH=$prefix/portable-ruby/current/bin:$PATH"
-echo >&2 "==> `which ruby`"
+echo >&2 "==> $(command -v ruby)"
 ruby --version 1>&2
 echo >&2 "==> Add Ruby to your PATH by running:"
 echo "PATH=$prefix/portable-ruby/current/bin"':$PATH'
