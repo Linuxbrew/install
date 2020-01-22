@@ -10,7 +10,7 @@ umask 022
 # 3. Ruby is present but too old
 if test -n "$HOMEBREW_FORCE_VENDOR_RUBY" || \
    ! command -v ruby >/dev/null || \
-   (command -v ruby >/dev/null && ruby -e 'exit RUBY_VERSION.split(".").first(2).join(".").to_f < 2.3'); then
+   ruby -e 'version = RUBY_VERSION.split(".").first(2).join(".").to_f; exit (version < 2.6 || version > 2.6)'; then
     eval "`curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install-ruby`"
 fi
 exec ruby -e "`curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install`" "$@"
